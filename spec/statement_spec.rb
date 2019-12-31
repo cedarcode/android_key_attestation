@@ -17,6 +17,10 @@ RSpec.describe AndroidKeyAttestation::Statement do
     it "raises an error if the challenge does not match" do
       expect { subject.verify_challenge("foo") }.to raise_error(AndroidKeyAttestation::ChallengeMismatchError)
     end
+
+    it "raises an error if the challenge is of different length" do
+      expect { subject.verify_challenge("foobar") }.to raise_error(AndroidKeyAttestation::ChallengeMismatchError)
+    end
   end
 
   context "#key_description" do

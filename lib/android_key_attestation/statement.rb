@@ -24,7 +24,9 @@ module AndroidKeyAttestation
     end
 
     def verify_challenge(challenge)
-      OpenSSL.fixed_length_secure_compare(key_description.attestation_challenge, challenge) ||
+      attestation_challenge = key_description.attestation_challenge
+      attestation_challenge.bytesize == challenge.bytesize &&
+        OpenSSL.fixed_length_secure_compare(attestation_challenge, challenge) ||
         raise(ChallengeMismatchError)
     end
 
