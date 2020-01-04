@@ -16,6 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Extracted from [webauthn-ruby](https://github.com/cedarcode/webauthn-ruby) after discussion with the maintainers. Thanks for the feedback @grzuy and @brauliomartinezlm!
 
-[Unreleased]: https://github.com/bdewater/android_key_attestation/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/bdewater/android_key_attestation/releases/tag/v0.1.0...0.2.0
+[Unreleased]: https://github.com/bdewater/android_key_attestation/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/bdewater/android_key_attestation/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/bdewater/android_key_attestation/releases/tag/v0.1.0
