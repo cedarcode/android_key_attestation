@@ -23,6 +23,23 @@ RSpec.describe AndroidKeyAttestation::Statement do
     end
   end
 
+  context "#verify_certificate_chain" do
+    subject { described_class.new(intermediate_certificate) }
+
+    let(:spec_path) { File.join(AndroidKeyAttestation::GEM_ROOT, "..", "spec") }
+    let(:root_certificate) do
+      OpenSSL::X509::Certificate.new(File.read(File.join(spec_path, "google_software_attestation_root.pem")))
+    end
+    let(:intermediate_certificate) do
+      OpenSSL::X509::Certificate.new(File.read(File.join(spec_path, "google_software_attestation_intermediate.pem")))
+    end
+    let(:time) { Time.utc(2019, 12, 31) }
+
+    it "returns true if the challenge matches" do
+      expect(subject.verify_certificate_chain(root_certificates: [root_certificate], time: time)).to be true
+    end
+  end
+
   context "#key_description" do
     it "raises an error is the extension data is missing" do
       expect { described_class.new(OpenSSL::X509::Certificate.new).key_description }.to(
