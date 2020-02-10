@@ -35,8 +35,14 @@ RSpec.describe AndroidKeyAttestation::Statement do
     end
     let(:time) { Time.utc(2019, 12, 31) }
 
-    it "returns true if the challenge matches" do
+    it "returns true if the chain is valid" do
       expect(subject.verify_certificate_chain(root_certificates: [root_certificate], time: time)).to be true
+    end
+
+    it "raises error if the chain is not valid" do
+      expect { subject.verify_certificate_chain(time: time) }.to(
+        raise_error(AndroidKeyAttestation::CertificateVerificationError)
+      )
     end
   end
 

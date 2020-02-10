@@ -34,7 +34,7 @@ module AndroidKeyAttestation
         raise(ChallengeMismatchError)
     end
 
-    def verify_certificate_chain(root_certificates: GOOGLE_ROOT_CERTIFICATE, time: Time.now)
+    def verify_certificate_chain(root_certificates: GOOGLE_ROOT_CERTIFICATES, time: Time.now)
       store = OpenSSL::X509::Store.new
       root_certificates.each { |cert| store.add_cert(cert) }
       store.time = time
