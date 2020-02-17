@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    android_key_attestation (0.2.0)
+    android_key_attestation (0.3.0)
 
 GEM
   remote: https://rubygems.org/
