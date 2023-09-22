@@ -4,7 +4,7 @@ RSpec.describe AndroidKeyAttestation::Statement do
   subject { described_class.new(test_certificate) }
 
   context "#attestation_certificate" do
-    it "returns true the first certificate in the chain" do
+    it "returns the first certificate in the chain" do
       expect(subject.attestation_certificate.to_pem).to eq(test_certificate.to_pem)
     end
   end
