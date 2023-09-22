@@ -2,7 +2,7 @@
 
 module AndroidKeyAttestation
   class AuthorizationList
-    # https://source.android.com/security/keystore/attestation#attestation-extension
+    # https://source.android.com/docs/security/features/keystore/attestation#attestation-extension
     PURPOSE_TAG = 1
     ALGORITHM_TAG = 2
     KEY_SIZE_TAG = 3
@@ -40,7 +40,7 @@ module AndroidKeyAttestation
     VENDOR_PATCH_LEVEL_TAG = 718
     BOOT_PATCH_LEVEL_TAG = 719
 
-    # https://source.android.com/security/keystore/tags
+    # https://source.android.com/docs/security/features/keystore/tags
     PURPOSE_ENUM = {
       0 => :encrypt,
       1 => :decrypt,
