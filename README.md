@@ -1,4 +1,4 @@
-# AndroidKeyAttestation
+# AndroidKeyAttestation [![build](https://github.com/bdewater/android_key_attestation/actions/workflows/ci.yml/badge.svg)](https://github.com/bdewater/android_key_attestation/actions/workflows/ci.yml)
 
 A Ruby gem to verify Android Key attestation statements on your server. Key attestation allows you to verify that the
 cryptographic keys you use in apps are stored the a hardware keystore of an Android device.
