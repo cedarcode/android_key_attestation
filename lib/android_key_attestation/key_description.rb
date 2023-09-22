@@ -4,7 +4,7 @@ require_relative "authorization_list"
 
 module AndroidKeyAttestation
   class KeyDescription
-    # https://developer.android.com/training/articles/security-key-attestation#certificate_schema
+    # https://developer.android.com/training/articles/security-key-attestation#key_attestation_ext_schema
     ATTESTATION_VERSION_INDEX = 0
     ATTESTATION_SECURITY_LEVEL_INDEX = 1
     KEYMASTER_VERSION_INDEX = 2
