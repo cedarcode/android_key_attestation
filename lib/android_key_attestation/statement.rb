@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "forwardable"
+require "json"
 require "openssl"
 require_relative "key_description"
 require_relative "fixed_length_secure_compare"
@@ -9,8 +10,8 @@ module AndroidKeyAttestation
   class Statement
     EXTENSION_DATA_OID = "1.3.6.1.4.1.11129.2.1.17"
     GOOGLE_ROOT_CERTIFICATES = begin
-      file = File.read(File.join(GEM_ROOT, "android_key_attestation", "google_hardware_attestation_root.pem"))
-      [OpenSSL::X509::Certificate.new(file)]
+      file = File.read(File.join(GEM_ROOT, "android_key_attestation", "google_hardware_attestation_roots.json"))
+      JSON.parse(file).map { |certificate| OpenSSL::X509::Certificate.new(certificate) }
     end.freeze
 
     extend Forwardable
