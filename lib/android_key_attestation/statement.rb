@@ -34,13 +34,16 @@ module AndroidKeyAttestation
         raise(ChallengeMismatchError)
     end
 
-    def verify_certificate_chain(root_certificates: GOOGLE_ROOT_CERTIFICATES, time: Time.now)
+    def verify_certificate_chain(root_certificates: GOOGLE_ROOT_CERTIFICATES, time: Time.now, revocation_status: nil)
       store = OpenSSL::X509::Store.new
       root_certificates.each { |cert| store.add_cert(cert) }
       store.time = time
 
       store.verify(attestation_certificate, @certificates[1..-1]) ||
         raise(CertificateVerificationError, store.error_string)
+
+      verify_revocation_status(revocation_status) if revocation_status
+      true
     end
 
     def key_description
@@ -50,6 +53,22 @@ module AndroidKeyAttestation
 
         raw_key_description = OpenSSL::ASN1.decode(extension_data).value.last
         KeyDescription.new(OpenSSL::ASN1.decode(raw_key_description.value).value)
+      end
+    end
+
+    private
+
+    def verify_revocation_status(revocation_status)
+      entries = revocation_status["entries"] if revocation_status.is_a?(Hash)
+      raise CertificateVerificationError, "invalid revocation status" unless entries.is_a?(Hash)
+
+      @certificates.each do |certificate|
+        serial = certificate.serial.to_s(16).downcase
+        next unless entries.key?(serial)
+
+        details = entries[serial]
+        status = details["status"] if details.is_a?(Hash)
+        raise CertificateRevocationError, "certificate #{serial} is #{status || 'listed as invalid'}"
       end
     end
   end
