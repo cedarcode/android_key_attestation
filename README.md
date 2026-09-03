@@ -21,24 +21,30 @@ Or install it yourself as:
 
 ## Usage
 
-Request an attestation statement as described in the [Android developer documentation](https://developer.android.com/training/articles/security-key-attestation#verifying) and send the certificate chain to your server application.
+Request an attestation statement as described in the [Android developer documentation](https://developer.android.com/privacy-and-security/security-key-attestation) and send the certificate chain to your server application. Fetch and cache Google's [certificate revocation status list](https://android.googleapis.com/attestation/status) according to its `Cache-Control` header, then parse the cached JSON before verification.
 
 In your server application code, do the following:
 
 ```ruby
 require "android_key_attestation"
+require "json"
 
-statement = AndroidKeyAttestation::Statement.new(certificates)
+statement = AndroidKeyAttestation::Statement.new(*certificates)
+revocation_status = JSON.parse(cached_google_attestation_status)
 
-# Verify the attestation certificate was issued for the challenge you generated
 begin
-  statement.verify(challenge)
-rescue AndroidKeyAttestation::ChallengeMismatchError => e
+  # Verify the complete certificate chain and reject revoked or suspended keys.
+  statement.verify_certificate_chain(revocation_status: revocation_status)
+
+  # Verify the attestation certificate was issued for the challenge you generated.
+  statement.verify_challenge(challenge)
+rescue AndroidKeyAttestation::CertificateVerificationError,
+       AndroidKeyAttestation::ChallengeMismatchError => e
   # abort
 end
 
 # Inspect properties of the attestation certificate belonging to the generated key pair, see
-# https://developer.android.com/training/articles/security-key-attestation#certificate_schema_keydescription
+# https://source.android.com/docs/security/features/keystore/attestation#schema
 # for more details. The gem uses snake_case versions of the lowerCamelCase names in the above link. 
 statement.attestation_version
 # => 3
